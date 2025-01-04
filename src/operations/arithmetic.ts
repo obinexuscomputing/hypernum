@@ -292,31 +292,7 @@ import {
     return abs(bigA * bigB) / gcd(bigA, bigB);
   }
   
-  /**
-   * Calculates factorial of a number
-   */
-  export function factorial(value: bigint | string | number): bigint {
-    const bigValue = toBigInt(value);
-    validateNonNegative(bigValue);
-  
-    if (bigValue > BigInt(1000)) {
-      throw new OverflowError('Factorial input too large');
-    }
-  
-    if (bigValue <= BigInt(1)) {
-      return BigInt(1);
-    }
-  
-    let result = BigInt(1);
-    let current = BigInt(2);
-  
-    while (current <= bigValue) {
-      result *= current;
-      current++;
-    }
-  
-    return result;
-  }
+
   
   export default {
     add,
@@ -329,6 +305,6 @@ import {
     abs,
     sign,
     gcd,
-    lcm,
-    factorial
+    lcm, 
+    
   };

@@ -265,6 +265,8 @@ import {
   
     return result;
   }
+
+  
   
   export default {
     factorial,
