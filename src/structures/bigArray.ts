@@ -1,4 +1,4 @@
-import { Comparator, MinHeap, MaxHeap } from './heap';
+import { Comparator, MinHeap, MaxHeap } from './Heap';
 
 /**
  * Interface for segment tree node operations
