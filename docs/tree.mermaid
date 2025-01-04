@@ -1,0 +1,89 @@
+graph TD
+    root[hypernum/]
+    src[src/]
+    tests[__tests__/]
+    
+    %% src directories
+    core[core/]
+    ops[operations/]
+    structs[structures/]
+    utils[utils/]
+    types[types/]
+    
+    %% test directories
+    unit[unit/]
+    integration[integration/]
+    bench[benchmark/]
+
+    %% Core files
+    coreFiles["- index.ts
+    - hypernum.ts
+    - errors.ts
+    - constants.ts"]
+
+    %% Operations files
+    opsFiles["- index.ts
+    - arithmetic.ts
+    - comparison.ts
+    - bitwise.ts
+    - conversion.ts
+    - factorial.ts
+    - power.ts"]
+
+    %% Structures files
+    structsFiles["- index.ts
+    - bigArray.ts
+    - numberTree.ts
+    - heap.ts
+    - ackermann.ts"]
+
+    %% Utils files
+    utilsFiles["- index.ts
+    - validation.ts
+    - formatting.ts
+    - precision.ts
+    - parser.ts"]
+
+    %% Types files
+    typesFiles["- index.ts
+    - common.ts
+    - config.ts
+    - errors.ts"]
+
+    %% Test files
+    unitFiles["- core.test.ts
+    - operations.test.ts
+    - structures.test.ts
+    - utils.test.ts"]
+
+    integrationFiles["- arithmetic.test.ts
+    - structures.test.ts
+    - endToEnd.test.ts"]
+
+    benchFiles["- index.ts
+    - operations.bench.ts
+    - structures.bench.ts"]
+
+    %% Connections
+    root --> src
+    root --> tests
+    
+    src --> core
+    src --> ops
+    src --> structs
+    src --> utils
+    src --> types
+    
+    tests --> unit
+    tests --> integration
+    tests --> bench
+    
+    core --> coreFiles
+    ops --> opsFiles
+    structs --> structsFiles
+    utils --> utilsFiles
+    types --> typesFiles
+    
+    unit --> unitFiles
+    integration --> integrationFiles
+    bench --> benchFiles

@@ -4,12 +4,12 @@
  *  0: values are equal
  *  1: first value is greater than second value
  */
-type ComparisonResult = -1 | 0 | 1;
+export type ComparisonResult = -1 | 0 | 1;
 
 /**
  * Generic comparator function type for heap elements
  */
-type Comparator<T> = (a: T, b: T) => ComparisonResult;
+export type Comparator<T> = (a: T, b: T) => ComparisonResult;
 
 /**
  * Abstract base heap class implementing common heap operations
@@ -227,14 +227,11 @@ export const isMaxHeap = <T>(heap: Heap<T>): heap is MaxHeap<T> => {
   return heap instanceof MaxHeap;
 };
 
-// Example comparator for large numbers
-export const createLargeNumberComparator = (): Comparator<bigint | string> => {
-  return (a: bigint | string, b: bigint | string): ComparisonResult => {
-    const aBig = typeof a === 'string' ? BigInt(a) : a;
-    const bBig = typeof b === 'string' ? BigInt(b) : b;
-    
-    if (aBig < bBig) return -1;
-    if (aBig > bBig) return 1;
-    return 0;
+/**
+ * Custom comparator for large numbers
+ */
+export function createLargeNumberComparator(): (a: bigint, b: bigint) => number {
+  return (a, b) => {
+    return a > b ? 1 : a < b ? -1 : 0;
   };
-};
+}

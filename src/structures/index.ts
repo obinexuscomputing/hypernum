@@ -1,1 +1,1 @@
-export {MinHeap,MaxHeap,isMaxHeap,isMinHeap} from './Heap';
+export {MinHeap,MaxHeap,isMaxHeap,isMinHeap} from './heap';
