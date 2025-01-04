@@ -5,29 +5,26 @@
 
 import { RoundingMode } from '../utils/precision';
 import { 
-  Comparator,
   FormatOptions,
   DebugConfig,
   CacheConfig,
   MathConstantsConfig
-} from '../types/common';
+} from './common';
 
 /**
- * Global library configuration
+ * Basic configuration options for simple usage
  */
-export interface HypernumConfig {
-  /** Arithmetic operation configuration */
-  arithmetic: ArithmeticConfig;
-  /** Data structure configuration */
-  dataStructures: DataStructuresConfig;
-  /** Formatting configuration */
-  formatting: FormattingConfig;
-  /** Performance configuration */
-  performance: PerformanceConfig;
-  /** Debug configuration */
-  debug: DebugConfig;
-  /** Feature flags */
-  features: FeatureFlags;
+export interface BasicConfig {
+  /** Decimal precision for operations */
+  precision?: number;
+  /** Rounding mode for decimal operations */
+  roundingMode?: RoundingMode;
+  /** Whether to check for overflow */
+  checkOverflow?: boolean;
+  /** Maximum allowed computation steps */
+  maxSteps?: number;
+  /** Enable debug mode */
+  debug?: boolean;
 }
 
 /**
@@ -160,9 +157,43 @@ export interface FeatureFlags {
 }
 
 /**
- * Default configuration values
+ * Full configuration interface with all options
  */
-export const DEFAULT_CONFIG: HypernumConfig = {
+export interface FullConfig {
+  /** Arithmetic operation configuration */
+  arithmetic: ArithmeticConfig;
+  /** Data structure configuration */
+  dataStructures: DataStructuresConfig;
+  /** Formatting configuration */
+  formatting: FormattingConfig;
+  /** Performance configuration */
+  performance: PerformanceConfig;
+  /** Debug configuration */
+  debug: DebugConfig;
+  /** Feature flags */
+  features: FeatureFlags;
+}
+
+/**
+ * Combined configuration type that can be either basic or full
+ */
+export type HypernumConfig = BasicConfig | FullConfig;
+
+/**
+ * Default configuration values for basic config
+ */
+export const DEFAULT_BASIC_CONFIG: Required<BasicConfig> = {
+  precision: 0,
+  roundingMode: RoundingMode.HALF_EVEN,
+  checkOverflow: true,
+  maxSteps: 1000,
+  debug: false
+};
+
+/**
+ * Full default configuration values
+ */
+export const DEFAULT_FULL_CONFIG: FullConfig = {
   arithmetic: {
     defaultPrecision: 0,
     defaultRoundingMode: RoundingMode.HALF_EVEN,
@@ -254,69 +285,88 @@ export const DEFAULT_CONFIG: HypernumConfig = {
 };
 
 /**
- * Type guard to check if an object is a valid HypernumConfig
+ * Type guard to check if config is a full configuration
  */
-export function isValidConfig(config: unknown): config is HypernumConfig {
-  if (typeof config !== 'object' || config === null) {
-    return false;
-  }
-
-  const requiredKeys: Array<keyof HypernumConfig> = [
-    'arithmetic',
-    'dataStructures',
-    'formatting',
-    'performance',
-    'debug',
-    'features'
-  ];
-
-  return requiredKeys.every(key => key in config);
+export function isFullConfig(config: HypernumConfig): config is FullConfig {
+  return 'arithmetic' in config && 'dataStructures' in config;
 }
 
 /**
- * Merges custom configuration with defaults
+ * Type guard to check if config is a basic configuration
  */
-export function mergeConfig(custom: Partial<HypernumConfig>): HypernumConfig {
-  return {
-    ...DEFAULT_CONFIG,
-    ...custom,
-    arithmetic: { ...DEFAULT_CONFIG.arithmetic, ...custom.arithmetic },
-    dataStructures: { ...DEFAULT_CONFIG.dataStructures, ...custom.dataStructures },
-    formatting: { ...DEFAULT_CONFIG.formatting, ...custom.formatting },
-    performance: { ...DEFAULT_CONFIG.performance, ...custom.performance },
-    debug: { ...DEFAULT_CONFIG.debug, ...custom.debug },
-    features: { ...DEFAULT_CONFIG.features, ...custom.features }
-  };
+export function isBasicConfig(config: HypernumConfig): config is BasicConfig {
+  return !isFullConfig(config);
 }
 
 /**
  * Validates configuration values
- * @throws {ValidationError} if configuration is invalid
  */
 export function validateConfig(config: HypernumConfig): void {
-  // Validate arithmetic config
+  if (isFullConfig(config)) {
+    validateFullConfig(config);
+  } else {
+    validateBasicConfig(config);
+  }
+}
+
+/**
+ * Validates basic configuration values
+ */
+function validateBasicConfig(config: BasicConfig): void {
+  if (config.precision !== undefined && config.precision < 0) {
+    throw new Error('Precision cannot be negative');
+  }
+  if (config.maxSteps !== undefined && config.maxSteps <= 0) {
+    throw new Error('Maximum steps must be positive');
+  }
+  if (config.debug !== undefined && typeof config.debug !== 'boolean') {
+    throw new Error('Debug flag must be a boolean');
+  }
+}
+
+/**
+ * Validates full configuration values
+ */
+function validateFullConfig(config: FullConfig): void {
   if (config.arithmetic.defaultPrecision < 0) {
     throw new Error('Default precision cannot be negative');
   }
   if (config.arithmetic.maxComputationSteps <= 0) {
     throw new Error('Max computation steps must be positive');
   }
-
-  // Validate data structures config
   if (config.dataStructures.array.initialCapacity <= 0) {
     throw new Error('Initial capacity must be positive');
   }
   if (config.dataStructures.array.growthFactor <= 1) {
     throw new Error('Growth factor must be greater than 1');
   }
-
-  // Validate formatting config
-  if (config.formatting.groupSize !== undefined && config.formatting.groupSize <= 0) {
-    throw new Error('Group size must be positive');
-  }
-
-  // Validate performance config
   if (config.performance.samplingRate < 0 || config.performance.samplingRate > 1) {
     throw new Error('Sampling rate must be between 0 and 1');
   }
+}
+
+/**
+ * Merges configuration with appropriate defaults
+ */
+export function mergeConfig(custom: Partial<HypernumConfig> = {}): HypernumConfig {
+  if (isFullConfig(custom)) {
+    return {
+      ...DEFAULT_FULL_CONFIG,
+      ...custom,
+      arithmetic: { ...DEFAULT_FULL_CONFIG.arithmetic, ...custom.arithmetic },
+      dataStructures: { ...DEFAULT_FULL_CONFIG.dataStructures, ...custom.dataStructures },
+      formatting: { ...DEFAULT_FULL_CONFIG.formatting, ...custom.formatting },
+      performance: { ...DEFAULT_FULL_CONFIG.performance, ...custom.performance },
+      debug: { ...DEFAULT_FULL_CONFIG.debug, ...custom.debug },
+      features: { ...DEFAULT_FULL_CONFIG.features, ...custom.features }
+    };
+  }
+  
+  return {
+    precision: (custom as Partial<BasicConfig>).precision ?? DEFAULT_BASIC_CONFIG.precision,
+    roundingMode: (custom as Partial<BasicConfig>).roundingMode ?? DEFAULT_BASIC_CONFIG.roundingMode,
+    checkOverflow: isBasicConfig(custom) ? ((custom as Partial<BasicConfig>).checkOverflow ?? DEFAULT_BASIC_CONFIG.checkOverflow) : undefined,
+    maxSteps: (custom as Partial<BasicConfig>).maxSteps ?? DEFAULT_BASIC_CONFIG.maxSteps,
+    debug: custom.debug ?? DEFAULT_BASIC_CONFIG.debug
+  };
 }
