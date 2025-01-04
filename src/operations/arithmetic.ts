@@ -330,5 +330,5 @@ import {
     sign,
     gcd,
     lcm, 
-    factorial
+    // factorial
   };
