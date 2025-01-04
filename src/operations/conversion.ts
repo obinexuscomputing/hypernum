@@ -292,41 +292,42 @@ import {
     return a;
   }
   
+
   /**
-   * Converts Roman numeral to number
-   */
-  export function fromRoman(value: string): bigint {
-    const romanValues: { [key: string]: number } = {
-      'I': 1,
-      'V': 5,
-      'X': 10,
-      'L': 50,
-      'C': 100,
-      'D': 500,
-      'M': 1000
-    };
-    
+ * Converts Roman numeral to number
+ */
+export function fromRoman(value: string): bigint {
+    const romanValues = new Map<string, number>([
+      ['I', 1],
+      ['V', 5],
+      ['X', 10],
+      ['L', 50],
+      ['C', 100],
+      ['D', 500],
+      ['M', 1000]
+    ]);
+  
     let result = 0;
     let prevValue = 0;
-    
+  
     // Process from right to left
     for (let i = value.length - 1; i >= 0; i--) {
-      const current = romanValues[value[i].toUpperCase()];
+      const char = value[i]?.toUpperCase() ?? '';
+      const current = romanValues.get(char);
+  
       if (current === undefined) {
-        throw new ValidationError('Invalid Roman numeral');
+        throw new ValidationError(`Invalid Roman numeral character: ${char}`);
       }
-      
-      if (current !== undefined) {
-        if (current >= prevValue) {
-          result += current;
-        } else {
-          result -= current;
-        }
-        
-        prevValue = current;
+  
+      if (current >= prevValue) {
+        result += current;
+      } else {
+        result -= current;
       }
+  
+      prevValue = current;
     }
-    
+  
     return BigInt(result);
   }
   
@@ -339,46 +340,57 @@ import {
   ): string {
     const opts = { ...DEFAULT_OPTIONS, ...options };
     const num = Number(toBigInt(value));
-    
+  
     if (num <= 0 || num > 3999) {
       throw new ValidationError('Number must be between 1 and 3999 for Roman numerals');
     }
-    
-    const romanSymbols = [
-      ['I', 'V'],  // ones
-      ['X', 'L'],  // tens
-      ['C', 'D'],  // hundreds
-      ['M']        // thousands
+  
+    // Define symbol pairs with proper typing
+    type RomanPair = [string, string];
+    type RomanSingle = [string];
+    type RomanSymbol = RomanPair | RomanSingle;
+  
+    const romanSymbols: RomanSymbol[] = [
+      ['I', 'V'], // ones
+      ['X', 'L'], // tens
+      ['C', 'D'], // hundreds
+      ['M']       // thousands
     ];
-    
+  
     let result = '';
     let position = 0;
     let remaining = num;
-    
+  
     while (remaining > 0) {
       const digit = remaining % 10;
-      const [unit = '', five = ''] = romanSymbols[position] || [];
-      const ten = (position < 3 && romanSymbols[position + 1]?.[0]) ?? '';
-      
+      const symbols = romanSymbols[position];
+  
+      if (!symbols) {
+        break; // Safety check for position overflow
+      }
+  
+      const unit = symbols[0];
+      const five = symbols[1] ?? '';
+      const next = position < 3 ? romanSymbols[position + 1]?.[0] ?? '' : '';
+  
       let digitStr = '';
-      if (digit === 9) {
-        digitStr = unit + ten;
-      } else if (digit >= 5) {
+      if (digit === 9 && next) {
+        digitStr = unit + next;
+      } else if (digit >= 5 && five) {
         digitStr = five + unit.repeat(digit - 5);
-      } else if (digit === 4) {
+      } else if (digit === 4 && five) {
         digitStr = unit + five;
       } else {
         digitStr = unit.repeat(digit);
       }
-      
+  
       result = digitStr + result;
       remaining = Math.floor(remaining / 10);
       position++;
     }
-    
+  
     return opts.uppercase ? result : result.toLowerCase();
   }
-  
   export default {
     toBinary,
     toOctal,
