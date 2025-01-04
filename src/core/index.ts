@@ -1,4 +1,5 @@
 export * from './config';
 export * from './errors';
 export * from './constants';
-export * from './hypernum';
+export { Hypernum } from './hypernum';
+export * from './common';
