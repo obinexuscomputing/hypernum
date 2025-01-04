@@ -135,9 +135,8 @@ export const scaledDivision = (
  * Calculate the number of significant digits
  */
 export const significantDigits = (value: bigint): number => {
-  const str = value.toString().replace(/^-/, '');
   const nonZeroPattern = /[1-9]/;
-  
+  const str = value.toString();
   const firstSignificant = str.search(nonZeroPattern);
   if (firstSignificant === -1) return 0;
   
@@ -157,7 +156,6 @@ export const truncateToSignificantDigits = (
     throw new ValidationError('Number of significant digits must be positive');
   }
 
-  const str = value.toString().replace(/^-/, '');
   const currentDigits = significantDigits(value);
   
   if (currentDigits <= digits) {
