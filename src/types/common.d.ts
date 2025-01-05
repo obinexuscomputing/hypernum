@@ -1,8 +1,3 @@
-/**
- * Common type definitions for Hypernum library
- * Contains core types used throughout the library's modules
- */
-
 import { RoundingMode } from '../utils/precision';
 
 /**
@@ -23,180 +18,309 @@ export type Result<T> = {
  * Base options interface for operations
  */
 export interface BaseOptions {
-  /** Decimal precision for operations */
   precision?: number;
-  /** Rounding mode for decimal operations */
   roundingMode?: RoundingMode;
-  /** Whether to check for overflow */
   checkOverflow?: boolean;
-  /** Maximum allowed computation steps */
+}
+
+/**
+ * Basic configuration options
+ */
+export interface BasicConfig {
+  precision?: number;
+  roundingMode?: RoundingMode;
+  checkOverflow?: boolean;
   maxSteps?: number;
+  debug?: boolean;
 }
 
 /**
- * Comparison function type
- * Returns:
- * -1: a < b
- *  0: a = b
- *  1: a > b
+ * Configuration for arithmetic operations
  */
-export type Comparator<T> = (a: T, b: T) => -1 | 0 | 1;
-
-/**
- * Node statistics for tree operations
- */
-export interface NodeStats {
-  height: number;
-  size: number;
-  sum: bigint;
-  min: bigint;
-  max: bigint;
+export interface ArithmeticConfig {
+  defaultPrecision: number;
+  defaultRoundingMode: RoundingMode;
+  checkOverflow: boolean;
+  maxComputationSteps: number;
+  autoPrecision: {
+    enabled: boolean;
+    maxPrecision: number;
+    minPrecision: number;
+  };
+  constants: MathConstantsConfig;
 }
 
 /**
- * Configuration for traversal operations
+ * Configuration for data structures
  */
-export interface TraversalConfig {
-  /** Include node statistics in traversal */
-  includeStats?: boolean;
-  /** Skip processing subtrees */
-  skipSubtrees?: boolean;
-  /** Maximum depth to traverse */
-  maxDepth?: number;
+export interface DataStructuresConfig {
+  array: {
+    initialCapacity: number;
+    growthFactor: number;
+    maxSize: number;
+  };
+  tree: {
+    maxDepth: number;
+    autoBalance: boolean;
+    nodeLimit: number;
+  };
+  heap: {
+    initialCapacity: number;
+    growthPolicy: 'double' | 'linear' | 'fibonacci';
+    validatePropertyOnOperation: boolean;
+  };
+  cache: CacheConfig & {
+    enabled: boolean;
+    persistToDisk: boolean;
+    compressionEnabled: boolean;
+  };
 }
 
 /**
- * Options for number formatting
+ * Configuration for number formatting
  */
-export interface FormatOptions extends BaseOptions {
-  /** Number notation style */
+export interface FormattingConfig extends FormatOptions {
+  scientific: {
+    minExponent: number;
+    maxSignificantDigits: number;
+    exponentSeparator: string;
+  };
+  engineering: {
+    useSIPrefixes: boolean;
+    customUnits?: Map<number, string>;
+  };
+  localization: {
+    locale: string;
+    numberFormat?: Intl.NumberFormatOptions;
+    useLocaleGrouping: boolean;
+  };
+}
+
+/**
+ * Configuration for performance monitoring
+ */
+export interface PerformanceConfig {
+  enableTracking: boolean;
+  samplingRate: number;
+  thresholds: {
+    warnThresholdMs: number;
+    errorThresholdMs: number;
+    maxMemoryBytes: number;
+  };
+  metrics: {
+    timing: boolean;
+    memory: boolean;
+    cache: boolean;
+    custom?: Map<string, (operation: any) => number>;
+  };
+}
+
+/**
+ * Feature flags for optional functionality
+ */
+export interface FeatureFlags {
+  experimentalFeatures: boolean;
+  useWasm: boolean;
+  workerThreads: boolean;
+  sharedArrayBuffer: boolean;
+  bigIntTypedArrays: boolean;
+}
+
+/**
+ * Full configuration interface
+ */
+export interface FullConfig {
+  arithmetic: ArithmeticConfig;
+  dataStructures: DataStructuresConfig;
+  formatting: FormattingConfig;
+  performance: PerformanceConfig;
+  debug: DebugConfig;
+  features: FeatureFlags;
+}
+
+/**
+ * Combined configuration type
+ */
+export type HypernumConfig = BasicConfig | FullConfig;
+
+/**
+ * Default basic configuration
+ */
+export const DEFAULT_BASIC_CONFIG: Required<BasicConfig> = {
+  precision: 0,
+  roundingMode: RoundingMode.HALF_EVEN,
+  checkOverflow: true,
+  maxSteps: 1000,
+  debug: false
+};
+
+/**
+ * Default full configuration
+ */
+export const DEFAULT_FULL_CONFIG: FullConfig = {
+  arithmetic: {
+    defaultPrecision: 0,
+    defaultRoundingMode: RoundingMode.HALF_EVEN,
+    checkOverflow: true,
+    maxComputationSteps: 1000,
+    autoPrecision: {
+      enabled: true,
+      maxPrecision: 100,
+      minPrecision: 0
+    },
+    constants: {
+      precision: 50,
+      cache: true,
+      algorithm: 'series'
+    }
+  },
+  dataStructures: {
+    array: {
+      initialCapacity: 16,
+      growthFactor: 2,
+      maxSize: 1_000_000
+    },
+    tree: {
+      maxDepth: 1000,
+      autoBalance: true,
+      nodeLimit: 1_000_000
+    },
+    heap: {
+      initialCapacity: 16,
+      growthPolicy: 'double',
+      validatePropertyOnOperation: true
+    },
+    cache: {
+      enabled: true,
+      maxSize: 1000,
+      ttl: 3600000,
+      evictionPolicy: 'LRU',
+      persistToDisk: false,
+      compressionEnabled: false
+    }
+  },
+  formatting: {
+    notation: 'standard',
+    precision: 0,
+    grouping: true,
+    groupSize: 3,
+    decimalSeparator: '.',
+    groupSeparator: ',',
+    uppercase: false,
+    scientific: {
+      minExponent: 6,
+      maxSignificantDigits: 6,
+      exponentSeparator: 'e'
+    },
+    engineering: {
+      useSIPrefixes: true
+    },
+    localization: {
+      locale: 'en-US',
+      useLocaleGrouping: false
+    }
+  },
+  performance: {
+    enableTracking: false,
+    samplingRate: 0.1,
+    thresholds: {
+      warnThresholdMs: 100,
+      errorThresholdMs: 1000,
+      maxMemoryBytes: 1024 * 1024 * 1024
+    },
+    metrics: {
+      timing: true,
+      memory: true,
+      cache: true
+    }
+  },
+  debug: {
+    verbose: false,
+    trackPerformance: false,
+    logLevel: 'error'
+  },
+  features: {
+    experimentalFeatures: false,
+    useWasm: false,
+    workerThreads: false,
+    sharedArrayBuffer: false,
+    bigIntTypedArrays: true
+  }
+};
+
+/**
+ * Type guard to check if config is a full configuration
+ */
+export function isFullConfig(config: HypernumConfig): config is FullConfig {
+  return 'arithmetic' in config && 'dataStructures' in config;
+}
+
+/**
+ * Type guard to check if config is a basic configuration
+ */
+export function isBasicConfig(config: HypernumConfig): config is BasicConfig {
+  return !isFullConfig(config);
+}
+
+/**
+ * Validates configuration values
+ */
+export function validateConfig(config: HypernumConfig): void {
+  if (isFullConfig(config)) {
+    validateFullConfig(config);
+  } else {
+    validateBasicConfig(config);
+  }
+}
+
+/**
+ * Merges configuration with appropriate defaults
+ */
+export function mergeConfig(custom: Partial<HypernumConfig> = {}): HypernumConfig {
+  if (isFullConfig(custom)) {
+    return {
+      ...DEFAULT_FULL_CONFIG,
+      ...custom,
+      arithmetic: { ...DEFAULT_FULL_CONFIG.arithmetic, ...custom.arithmetic },
+      dataStructures: { ...DEFAULT_FULL_CONFIG.dataStructures, ...custom.dataStructures },
+      formatting: { ...DEFAULT_FULL_CONFIG.formatting, ...custom.formatting },
+      performance: { ...DEFAULT_FULL_CONFIG.performance, ...custom.performance },
+      debug: { ...DEFAULT_FULL_CONFIG.debug, ...custom.debug },
+      features: { ...DEFAULT_FULL_CONFIG.features, ...custom.features }
+    };
+  }
+  
+  return {
+    ...DEFAULT_BASIC_CONFIG,
+    ...custom
+  };
+}
+
+// Additional required types
+export interface FormatOptions {
   notation?: 'standard' | 'scientific' | 'engineering' | 'compact';
-  /** Enable grouping separators */
+  precision?: number;
   grouping?: boolean;
-  /** Size of digit groups */
   groupSize?: number;
-  /** Decimal point character */
   decimalSeparator?: string;
-  /** Grouping separator character */
   groupSeparator?: string;
-  /** Convert to uppercase (for special formats) */
   uppercase?: boolean;
 }
 
-/**
- * Data structure initialization options
- */
-export interface DataStructureOptions<T> {
-  /** Initial capacity */
-  initialCapacity?: number;
-  /** Growth factor for dynamic resizing */
-  growthFactor?: number;
-  /** Custom comparison function */
-  comparator?: Comparator<T>;
-  /** Enable caching of computed values */
-  enableCache?: boolean;
-  /** Maximum cache size */
-  maxCacheSize?: number;
-}
-
-/**
- * Operation performance metrics
- */
-export interface OperationMetrics {
-  /** Operation execution time in milliseconds */
-  executionTime: number;
-  /** Number of computation steps performed */
-  steps: number;
-  /** Peak memory usage in bytes */
-  memoryUsage: number;
-  /** Whether operation hit computation limits */
-  hitLimits: boolean;
-}
-
-/**
- * Cache configuration
- */
 export interface CacheConfig {
-  /** Maximum number of entries */
   maxSize: number;
-  /** Time-to-live in milliseconds */
   ttl?: number;
-  /** Eviction policy */
   evictionPolicy?: 'LRU' | 'LFU' | 'FIFO';
 }
 
-/**
- * Numeric range specification
- */
-export interface NumericRange {
-  /** Start of range (inclusive) */
-  start: bigint;
-  /** End of range (inclusive) */
-  end: bigint;
-  /** Step size for iteration */
-  step?: bigint;
-}
-
-/**
- * Progress callback for long-running operations
- */
-export type ProgressCallback = (progress: {
-  /** Percentage complete (0-100) */
-  percentage: number;
-  /** Current operation phase */
-  phase: string;
-  /** Estimated time remaining in milliseconds */
-  estimatedTimeRemaining?: number;
-}) => void;
-
-/**
- * Operation status type
- */
-export type OperationStatus = 'pending' | 'running' | 'completed' | 'failed';
-
-/**
- * Supported number bases for conversion
- */
-export type NumberBase = 2 | 8 | 10 | 16;
-
-/**
- * Mathematical constants configuration
- */
 export interface MathConstantsConfig {
-  /** Precision for constant calculations */
   precision: number;
-  /** Enable caching of computed values */
   cache?: boolean;
-  /** Custom calculation algorithm */
   algorithm?: 'series' | 'iteration' | 'approximation';
 }
 
-/**
- * Debug configuration
- */
 export interface DebugConfig {
-  /** Enable detailed logging */
   verbose: boolean;
-  /** Track operation performance */
-  trackPerformance?: boolean;
-  /** Log level */
-  logLevel?: 'error' | 'warn' | 'info' | 'debug';
-  /** Custom logger function */
-  logger?: (message: string, level: string) => void;
-}
-
-export interface OperationOptions extends BaseOptions {
-  /** Progress callback for long-running operations */
-  onProgress?: ProgressCallback;
-}
-
-export interface PerformanceMetrics {
-  /** Total execution time in milliseconds */
-  totalTime: number;
-  /** Average execution time in milliseconds */
-  averageTime: number;
-  /** Peak memory usage in bytes */
-  peakMemory: number;
-  /** Total number of operations performed */
-  totalOperations: number;
+  trackPerformance: boolean;
+  logLevel: 'error' | 'warn' | 'info' | 'debug';
 }

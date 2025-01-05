@@ -67,7 +67,7 @@ export type {
   FormattingConfig,
   PerformanceConfig,
   FeatureFlags
-} from './types/core';
+} from './types/core.d.ts';
 
 export {
   DEFAULT_BASIC_CONFIG,
