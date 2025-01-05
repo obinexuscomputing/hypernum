@@ -1,4 +1,4 @@
-import { Comparator } from './heap';
+import { Comparator } from '../storage/Heap';
 /**
  * Interface for tree node statistics
  */

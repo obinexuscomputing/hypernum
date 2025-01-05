@@ -184,3 +184,19 @@ export interface DebugConfig {
   /** Custom logger function */
   logger?: (message: string, level: string) => void;
 }
+
+export interface OperationOptions extends BaseOptions {
+  /** Progress callback for long-running operations */
+  onProgress?: ProgressCallback;
+}
+
+export interface PerformanceMetrics {
+  /** Total execution time in milliseconds */
+  totalTime: number;
+  /** Average execution time in milliseconds */
+  averageTime: number;
+  /** Peak memory usage in bytes */
+  peakMemory: number;
+  /** Total number of operations performed */
+  totalOperations: number;
+}

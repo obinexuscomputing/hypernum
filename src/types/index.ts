@@ -1,1 +1,2 @@
-export * from './common';
+export * from './common.d';
+export * from './core.d'

@@ -7,7 +7,7 @@ import { HypernumConfig, mergeConfig, validateConfig } from './core';
 import { power } from './operations';
 import arithmetic from './operations/arithmetic';
 import bitwise from './operations/bitwise';
-import { AckermannStructure, BigArray, NumberTree, MinHeap, MaxHeap, PowerTower } from './structures';
+import { AckermannStructure, BigArray, NumberTree, PowerTower } from './structures';
 
 // Core functionality
 export * from './core/constants';
@@ -17,7 +17,8 @@ export * from './core/errors';
 export { AckermannStructure } from './structures/Ackermann';
 export { BigArray } from './structures/BigArray';
 export { NumberTree } from './structures/NumberTree';
-export { MinHeap, MaxHeap, Comparator } from './storage/Heap';
+export { MinHeap, MaxHeap,  } from './storage/index';
+export type {Comparator} from './storage/index';
 export { PowerTower } from './structures/PowerTower';
 
 // Operations

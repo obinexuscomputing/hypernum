@@ -1,4 +1,4 @@
-import { MaxHeap, createLargeNumberComparator, Comparator } from "./heap";
+import { MaxHeap, createLargeNumberComparator, Comparator } from "../storage/Heap";
 
   /**
    * Interface representing an Ackermann node in the computation structure
