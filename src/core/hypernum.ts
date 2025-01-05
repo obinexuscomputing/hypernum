@@ -119,7 +119,19 @@ export class Hypernum {
   public not(value: bigint | string | number): bigint {
     return bitwise.not(value);
   }
+ /**
+   * Calculates the greatest common divisor of two numbers
+   */
+ public gcd(a: bigint | string | number, b: bigint | string | number): bigint {
+  return arithmetic.gcd(a, b);
+}
 
+/**
+ * Calculates the least common multiple of two numbers
+ */
+public lcm(a: bigint | string | number, b: bigint | string | number): bigint {
+  return arithmetic.lcm(a, b);
+}
   // Data Structure Management
   public createArray(id: string): BigArray<bigint> {
     if (this.structures.arrays.has(id)) {
