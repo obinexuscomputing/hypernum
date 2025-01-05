@@ -207,7 +207,8 @@ const parseBaseNotation = (str: string, base: number): bigint => {
     16: '0x'
   };
   
-  if (prefixes[base] && cleanStr.startsWith(prefixes[base])) {
+  const prefix = prefixes[base];
+  if (prefix && cleanStr.startsWith(prefix)) {
     cleanStr = cleanStr.slice(2);
   }
   
