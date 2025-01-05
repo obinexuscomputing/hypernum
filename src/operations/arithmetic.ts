@@ -4,14 +4,12 @@
  */
 
 import {
-    validatePositive,
     validateNonNegative,
     toBigInt,
     checkAdditionOverflow,
     checkMultiplicationOverflow,
     checkPowerOverflow,
     ValidationError,
-    OverflowError
   } from '../utils/validation';
   
   import {
@@ -19,7 +17,6 @@ import {
     round,
     scaledDivision,
     normalizePrecision,
-    scaleByPowerOfTen
   } from '../utils/precision';
   
   /**
