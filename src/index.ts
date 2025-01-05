@@ -1,3 +1,5 @@
+
+import packageJson from '../package.json';
 /**
  * Hypernum - A TypeScript/JavaScript library for large number operations
  * Provides comprehensive tools for handling large numbers and complex mathematical operations
@@ -98,7 +100,7 @@ export type {
 /**
  * Library version
  */
-export const VERSION = '0.1.0';
+export const VERSION = packageJson.version;
 
 /**
  * Creates a new Hypernum instance with custom configuration
