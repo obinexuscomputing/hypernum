@@ -139,10 +139,7 @@ export {
   scaledDivision,
   normalizePrecision
 } from './utils/precision';
-export { AckermannStructure } from './ackermann';
-export { BigArray, type BigArrayOptions } from './bigarray';
-export { NumberTree } from './numbertree';
-export { PowerTower } from './powertower';
+
 /**
  * Creates a new Hypernum instance with custom configuration
  */
