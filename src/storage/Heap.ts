@@ -1,3 +1,5 @@
+import { Comparator } from "@/core";
+
 /**
  * Represents the result of a comparison operation
  * -1: first value is less than second value
@@ -9,7 +11,7 @@ export type ComparisonResult = -1 | 0 | 1;
 /**
  * Generic comparator function type for heap elements
  */
-export type Comparator<T> = (a: T, b: T) => ComparisonResult;
+// export type Comparator<T> = (a: T, b: T) => ComparisonResult;
 
 /**
  * Abstract base heap class implementing common heap operations

@@ -5,6 +5,7 @@
 
 import { HypernumConfig, mergeConfig, validateConfig } from './core';
 import { Hypernum } from './core/hypernum';
+import { RoundingMode } from './utils';
 
 // Package version
 const VERSION: string = '0.1.0';
@@ -30,13 +31,9 @@ export {
   UnderflowError
 } from './core/errors';
 
-// Data structures with explicit exports
-export { AckermannStructure } from './structures/Ackermann';
-export { BigArray } from './structures/BigArray';
-export { NumberTree } from './structures/NumberTree';
-export { PowerTower } from './structures/PowerTower';
-export { MinHeap, MaxHeap } from './storage/Heap';
-export type { Comparator } from './storage/Heap';
+// Data structures and storage with explicit exports
+export * from './structures';
+export * from './storage';
 
 // Operations with explicit exports to avoid conflicts
 export {
@@ -150,23 +147,22 @@ export function createHypernum(config?: Partial<HypernumConfig>): Hypernum {
   const mergedConfig = mergeConfig(config || {});
   validateConfig(mergedConfig);
   
-  // Extract the basic config properties based on whether it's a BasicConfig or FullConfig
   const instanceConfig = {
     precision: 'arithmetic' in mergedConfig 
       ? mergedConfig.arithmetic.defaultPrecision 
-      : mergedConfig.precision,
+      : mergedConfig.precision ?? 0,
     roundingMode: 'arithmetic' in mergedConfig 
       ? mergedConfig.arithmetic.defaultRoundingMode 
-      : mergedConfig.roundingMode,
+      : (mergedConfig.roundingMode as RoundingMode) ?? 'HALF_EVEN',
     checkOverflow: 'arithmetic' in mergedConfig 
       ? mergedConfig.arithmetic.checkOverflow 
-      : mergedConfig.checkOverflow,
+      : mergedConfig.checkOverflow ?? true,
     maxSteps: 'arithmetic' in mergedConfig 
       ? mergedConfig.arithmetic.maxComputationSteps 
-      : mergedConfig.maxSteps,
-    debug: typeof mergedConfig.debug === 'object' 
+      : mergedConfig.maxSteps ?? 1000,
+    debug: 'debug' in mergedConfig && typeof mergedConfig.debug === 'object' 
       ? mergedConfig.debug.verbose 
-      : !!mergedConfig.debug
+      : false
   };
   
   return new Hypernum(instanceConfig);
