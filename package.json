@@ -6,6 +6,12 @@
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "browser": "dist/index.umd.js",
+  "unpkg": "dist/index.umd.js",
+  "funding": {
+    "type": "individual",
+    "url": "https://www.buymeacoffee.com/obinexuscomputing"
+  },
+  
   "type": "module",
   "exports": {
     ".": {
