@@ -79,10 +79,8 @@ import {
    * Performs bitwise NOT operation
    */
   export function not(
-    value: bigint | string | number,
-    options: BitwiseOptions = {}
+    value: bigint | string | number
   ): bigint {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     const bigValue = toBigInt(value);
     
     return ~bigValue;
