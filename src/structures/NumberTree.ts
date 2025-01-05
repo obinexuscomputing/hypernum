@@ -3,7 +3,7 @@ import { Comparator } from "@/core";
 /**
  * Interface for tree node statistics
  */
-export interface NodeStats {
+interface NodeStats {
   height: number;
   size: number;
   sum: bigint;
@@ -14,7 +14,7 @@ export interface NodeStats {
 /**
  * Interface for tree traversal configuration
  */
-export interface TraversalConfig {
+interface TraversalConfig {
   includeStats?: boolean;
   skipSubtrees?: boolean;
   maxDepth?: number;
