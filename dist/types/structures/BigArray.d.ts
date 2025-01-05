@@ -99,4 +99,4 @@ export declare class BigArray<T> {
     toArray(): T[];
 }
 export default BigArray;
-//# sourceMappingURL=BigArray.d.ts.map
+//# sourceMappingURL=bigarray.d.ts.map

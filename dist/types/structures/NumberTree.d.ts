@@ -111,4 +111,4 @@ export declare class NumberTree {
     getRange(start: bigint | string | number, end: bigint | string | number): bigint[];
 }
 export default NumberTree;
-//# sourceMappingURL=NumberTree.d.ts.map
+//# sourceMappingURL=numbertree.d.ts.map

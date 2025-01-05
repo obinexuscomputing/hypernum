@@ -71,4 +71,4 @@ export declare class AckermannStructure {
     getValue(m: number, n: number): bigint | undefined;
 }
 export default AckermannStructure;
-//# sourceMappingURL=Ackermann.d.ts.map
+//# sourceMappingURL=ackermann.d.ts.map

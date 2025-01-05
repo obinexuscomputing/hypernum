@@ -71,4 +71,4 @@ export declare class PowerTower {
     toString(): string;
 }
 export default PowerTower;
-//# sourceMappingURL=PowerTower.d.ts.map
+//# sourceMappingURL=powertower.d.ts.map

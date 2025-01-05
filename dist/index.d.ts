@@ -634,6 +634,189 @@ declare class AckermannStructure {
 }
 
 /**
+ * Represents the result of a comparison operation
+ * -1: first value is less than second value
+ *  0: values are equal
+ *  1: first value is greater than second value
+ */
+type ComparisonResult$1 = -1 | 0 | 1;
+/**
+ * Generic comparator function type for heap elements
+ */
+/**
+ * Abstract base heap class implementing common heap operations
+ */
+declare abstract class Heap<T> {
+    protected heap: T[];
+    protected readonly compare: Comparator$1<T>;
+    constructor(comparator: Comparator$1<T>);
+    /**
+     * Gets the size of the heap
+     */
+    size(): number;
+    /**
+     * Checks if the heap is empty
+     */
+    isEmpty(): boolean;
+    /**
+     * Peeks at the root element without removing it
+     */
+    peek(): T | undefined;
+    /**
+     * Inserts a new element into the heap
+     */
+    push(value: T): void;
+    /**
+     * Removes and returns the root element
+     */
+    pop(): T | undefined;
+    /**
+     * Removes all elements from the heap
+     */
+    clear(): void;
+    /**
+     * Creates a heap from an array of elements
+     */
+    static heapify<T extends {}>(array: T[], comparator: Comparator$1<T>): Heap<T>;
+    /**
+     * Gets the parent index of a node
+     */
+    protected getParentIndex(index: number): number;
+    /**
+     * Gets the left child index of a node
+     */
+    protected getLeftChildIndex(index: number): number;
+    /**
+     * Gets the right child index of a node
+     */
+    protected getRightChildIndex(index: number): number;
+    /**
+     * Swaps two elements in the heap
+     */
+    protected swap(i: number, j: number): void;
+    /**
+     * Moves an element up the heap until heap property is satisfied
+     */
+    protected abstract siftUp(index: number): void;
+    /**
+     * Moves an element down the heap until heap property is satisfied
+     */
+    protected abstract siftDown(index: number): void;
+}
+/**
+ * MinHeap implementation where the root is the smallest element
+ */
+declare class MinHeap<T> extends Heap<T> {
+    constructor(comparator: Comparator$1<T>);
+    protected siftUp(index: number): void;
+    protected siftDown(index: number): void;
+}
+/**
+ * MaxHeap implementation where the root is the largest element
+ */
+declare class MaxHeap<T> extends Heap<T> {
+    constructor(comparator: Comparator$1<T>);
+    protected siftUp(index: number): void;
+    protected siftDown(index: number): void;
+}
+declare const isMinHeap: <T>(heap: Heap<T>) => heap is MinHeap<T>;
+declare const isMaxHeap: <T>(heap: Heap<T>) => heap is MaxHeap<T>;
+/**
+ * Custom comparator for large numbers
+ */
+declare function createLargeNumberComparator(): (a: bigint, b: bigint) => number;
+
+/**
+ * Type for BigArray operation result
+ */
+type OperationResult<T> = {
+    success: boolean;
+    value?: T;
+    error?: string;
+};
+/**
+ * Options for BigArray initialization
+ */
+interface BigArrayOptions<T> {
+    initialCapacity?: number;
+    growthFactor?: number;
+    comparator?: Comparator$1<T>;
+}
+/**
+ * A specialized array implementation for handling large numbers and providing
+ * efficient operations with segment tree support
+ */
+declare class BigArray<T> {
+    private data;
+    private segmentTree;
+    private readonly growthFactor;
+    private readonly comparator;
+    private size;
+    private capacity;
+    constructor(options?: BigArrayOptions<T>);
+    /**
+     * Gets the current size of the array
+     */
+    getSize(): number;
+    /**
+     * Gets the current capacity of the array
+     */
+    getCapacity(): number;
+    /**
+     * Resizes the internal array when needed
+     */
+    private resize;
+    /**
+     * Appends an element to the end of the array
+     */
+    push(value: T): OperationResult<number>;
+    /**
+     * Removes and returns the last element
+     */
+    pop(): OperationResult<T>;
+    /**
+     * Gets element at specified index
+     */
+    get(index: number): OperationResult<T>;
+    /**
+     * Sets element at specified index
+     */
+    set(index: number, value: T): OperationResult<T>;
+    /**
+     * Rebuilds the segment tree after major changes
+     */
+    private rebuildSegmentTree;
+    /**
+     * Builds a segment tree node recursively
+     */
+    private buildSegmentTree;
+    /**
+     * Updates the segment tree after a value change
+     */
+    private updateSegmentTree;
+    /**
+     * Queries the maximum value in a range
+     */
+    queryRange(start: number, end: number): OperationResult<T>;
+    /**
+     * Recursively queries the segment tree
+     */
+    private querySegmentTree;
+    /**
+     * Creates a heap from the current array
+     */
+    toHeap(isMin?: boolean): MinHeap<T> | MaxHeap<T>;
+    /**
+     * Sorts the array in-place
+     */
+    sort(ascending?: boolean): void;
+    /**
+     * Returns array as native array
+     */
+    toArray(): T[];
+}
+
+/**
  * Interface for tree node statistics
  */
 interface NodeStats {
@@ -743,198 +926,6 @@ declare class NumberTree {
      * Gets a range of values between start and end (inclusive)
      */
     getRange(start: bigint | string | number, end: bigint | string | number): bigint[];
-}
-
-/**
- * Represents the result of a comparison operation
- * -1: first value is less than second value
- *  0: values are equal
- *  1: first value is greater than second value
- */
-type ComparisonResult$1 = -1 | 0 | 1;
-/**
- * Generic comparator function type for heap elements
- */
-/**
- * Abstract base heap class implementing common heap operations
- */
-declare abstract class Heap<T> {
-    protected heap: T[];
-    protected readonly compare: Comparator$1<T>;
-    constructor(comparator: Comparator$1<T>);
-    /**
-     * Gets the size of the heap
-     */
-    size(): number;
-    /**
-     * Checks if the heap is empty
-     */
-    isEmpty(): boolean;
-    /**
-     * Peeks at the root element without removing it
-     */
-    peek(): T | undefined;
-    /**
-     * Inserts a new element into the heap
-     */
-    push(value: T): void;
-    /**
-     * Removes and returns the root element
-     */
-    pop(): T | undefined;
-    /**
-     * Removes all elements from the heap
-     */
-    clear(): void;
-    /**
-     * Creates a heap from an array of elements
-     */
-    static heapify<T extends {}>(array: T[], comparator: Comparator$1<T>): Heap<T>;
-    /**
-     * Gets the parent index of a node
-     */
-    protected getParentIndex(index: number): number;
-    /**
-     * Gets the left child index of a node
-     */
-    protected getLeftChildIndex(index: number): number;
-    /**
-     * Gets the right child index of a node
-     */
-    protected getRightChildIndex(index: number): number;
-    /**
-     * Swaps two elements in the heap
-     */
-    protected swap(i: number, j: number): void;
-    /**
-     * Moves an element up the heap until heap property is satisfied
-     */
-    protected abstract siftUp(index: number): void;
-    /**
-     * Moves an element down the heap until heap property is satisfied
-     */
-    protected abstract siftDown(index: number): void;
-}
-/**
- * MinHeap implementation where the root is the smallest element
- */
-declare class MinHeap<T> extends Heap<T> {
-    constructor(comparator: Comparator$1<T>);
-    protected siftUp(index: number): void;
-    protected siftDown(index: number): void;
-}
-/**
- * MaxHeap implementation where the root is the largest element
- */
-declare class MaxHeap<T> extends Heap<T> {
-    constructor(comparator: Comparator$1<T>);
-    protected siftUp(index: number): void;
-    protected siftDown(index: number): void;
-}
-declare const isMinHeap: <T>(heap: Heap<T>) => heap is MinHeap<T>;
-declare const isMaxHeap: <T>(heap: Heap<T>) => heap is MaxHeap<T>;
-/**
- * Custom comparator for large numbers
- */
-declare function createLargeNumberComparator(): (a: bigint, b: bigint) => number;
-
-/**
- * Interface for segment tree node operations
- */
-interface SegmentTreeNode<T> {
-    value: T;
-    lazy?: T;
-    start: number;
-    end: number;
-}
-/**
- * Type for BigArray operation result
- */
-type OperationResult<T> = {
-    success: boolean;
-    value?: T;
-    error?: string;
-};
-/**
- * Options for BigArray initialization
- */
-interface BigArrayOptions<T> {
-    initialCapacity?: number;
-    growthFactor?: number;
-    comparator?: Comparator$1<T>;
-}
-/**
- * A specialized array implementation for handling large numbers and providing
- * efficient operations with segment tree support
- */
-declare class BigArray<T> {
-    private data;
-    private segmentTree;
-    private readonly growthFactor;
-    private readonly comparator;
-    private size;
-    private capacity;
-    constructor(options?: BigArrayOptions<T>);
-    /**
-     * Gets the current size of the array
-     */
-    getSize(): number;
-    /**
-     * Gets the current capacity of the array
-     */
-    getCapacity(): number;
-    /**
-     * Resizes the internal array when needed
-     */
-    private resize;
-    /**
-     * Appends an element to the end of the array
-     */
-    push(value: T): OperationResult<number>;
-    /**
-     * Removes and returns the last element
-     */
-    pop(): OperationResult<T>;
-    /**
-     * Gets element at specified index
-     */
-    get(index: number): OperationResult<T>;
-    /**
-     * Sets element at specified index
-     */
-    set(index: number, value: T): OperationResult<T>;
-    /**
-     * Rebuilds the segment tree after major changes
-     */
-    private rebuildSegmentTree;
-    /**
-     * Builds a segment tree node recursively
-     */
-    private buildSegmentTree;
-    /**
-     * Updates the segment tree after a value change
-     */
-    private updateSegmentTree;
-    /**
-     * Queries the maximum value in a range
-     */
-    queryRange(start: number, end: number): OperationResult<T>;
-    /**
-     * Recursively queries the segment tree
-     */
-    private querySegmentTree;
-    /**
-     * Creates a heap from the current array
-     */
-    toHeap(isMin?: boolean): MinHeap<T> | MaxHeap<T>;
-    /**
-     * Sorts the array in-place
-     */
-    sort(ascending?: boolean): void;
-    /**
-     * Returns array as native array
-     */
-    toArray(): T[];
 }
 
 /**
@@ -1468,4 +1459,4 @@ declare const VERSION: string;
 declare function createHypernum(config?: Partial<HypernumConfig$1>): Hypernum;
 declare const defaultHypernum: Hypernum;
 
-export { AckermannStructure, type ArithmeticConfig, type BaseOptions, type BasicConfig, BigArray, type BigArrayOptions, type CacheConfig, type Comparator, type ComparisonResult$1 as ComparisonResult, ComputationLimitError, DEFAULT_ARRAY_GROWTH_FACTOR, DEFAULT_BASIC_CONFIG, DEFAULT_CACHE_SIZE, DEFAULT_DECIMAL_SEPARATOR, DEFAULT_FULL_CONFIG, DEFAULT_GROUP_SEPARATOR, DEFAULT_GROUP_SIZE, DEFAULT_HEAP_INITIAL_CAPACITY, DEFAULT_OPTIONS, DEFAULT_TREE_MAX_DEPTH, DataStructureError, type DataStructuresConfig, type DebugConfig, DivisionByZeroError, ERROR_MESSAGES, type ErrorCallback, FEATURES, type FeatureFlags, FormatError, type FormatOptions$1 as FormatOptions, type FormattingConfig, type FullConfig, HeapPropertyError, Hypernum, type HypernumConfig$1 as HypernumConfig, HypernumError, IndexError, MAX_ACKERMANN_M, MAX_ACKERMANN_N, MAX_BITS, MAX_CACHE_SIZE, MAX_COMPUTATION_STEPS, MAX_FACTORIAL_INPUT, MAX_GROUP_SIZE, MAX_POWER_BASE, MAX_POWER_EXPONENT, MAX_PRECISION, MAX_ROMAN_VALUE, MAX_SAFE_INTEGER, MAX_TETRATION_HEIGHT, MIN_ARRAY_CAPACITY, MIN_ROMAN_VALUE, MIN_SAFE_INTEGER, type MathConstantsConfig, MaxHeap, MinHeap, NEGATIVE_ONE, NUMBER_UNITS, type NodeStats$1 as NodeStats, NumberTree, type NumericInput, type NumericRange, ONE, type OperationOptions, type OperationResult, type OperationStatus, PERFORMANCE, type PerformanceConfig, type PerformanceMetrics, PowerTower, PrecisionError, type ProgressCallback, type Result, RomanNumeralError, RoundingMode, type SegmentTreeNode, TEN, TWO, TreeError, UnderflowError, VERSION, type Validator, ZERO, abs, add, allEqual, and, between, binomial, checkAdditionOverflow, checkMultiplicationOverflow, checkPowerOverflow, clamp, clearBit, compare, convertToBasicConfig, createComparator, createHypernum, createLargeNumberComparator, Hypernum as default, defaultHypernum, divide, equals, factorial, fallingFactorial, formatBigInt, fromBase, fromFraction, fromRoman, fromScientific, gcd, getBit, greaterThan, greaterThanOrEqual, isAscending, isBasicConfig, isDescending, isFullConfig, isMaxHeap, isMinHeap, lcm, leadingZeros, leftShift, lessThan, lessThanOrEqual, max, mergeConfig, min, multiFactorial, multiply, normalizeNumberString, normalizePrecision, not, nthRoot, or, parseBigIntString, popCount, power, primorial, remainder, rightShift, risingFactorial, rotateLeft, rotateRight, round, scaleByPowerOfTen, scaledDivision, setBit, sign, sqrt, subfactorial, subtract, superRoot, tetration, toBase, toBigInt, toBinary, toFraction, toHexadecimal, toOctal, toRoman, toScientific, toggleBit, trailingZeros, unsignedRightShift, validateConfig, validateNonNegative, validatePositive, xor };
+export { AckermannStructure, type ArithmeticConfig, type BaseOptions, type BasicConfig, BigArray, type BigArrayOptions, type CacheConfig, type Comparator, type ComparisonResult$1 as ComparisonResult, ComputationLimitError, DEFAULT_ARRAY_GROWTH_FACTOR, DEFAULT_BASIC_CONFIG, DEFAULT_CACHE_SIZE, DEFAULT_DECIMAL_SEPARATOR, DEFAULT_FULL_CONFIG, DEFAULT_GROUP_SEPARATOR, DEFAULT_GROUP_SIZE, DEFAULT_HEAP_INITIAL_CAPACITY, DEFAULT_OPTIONS, DEFAULT_TREE_MAX_DEPTH, DataStructureError, type DataStructuresConfig, type DebugConfig, DivisionByZeroError, ERROR_MESSAGES, type ErrorCallback, FEATURES, type FeatureFlags, FormatError, type FormatOptions$1 as FormatOptions, type FormattingConfig, type FullConfig, HeapPropertyError, Hypernum, type HypernumConfig$1 as HypernumConfig, HypernumError, IndexError, MAX_ACKERMANN_M, MAX_ACKERMANN_N, MAX_BITS, MAX_CACHE_SIZE, MAX_COMPUTATION_STEPS, MAX_FACTORIAL_INPUT, MAX_GROUP_SIZE, MAX_POWER_BASE, MAX_POWER_EXPONENT, MAX_PRECISION, MAX_ROMAN_VALUE, MAX_SAFE_INTEGER, MAX_TETRATION_HEIGHT, MIN_ARRAY_CAPACITY, MIN_ROMAN_VALUE, MIN_SAFE_INTEGER, type MathConstantsConfig, MaxHeap, MinHeap, NEGATIVE_ONE, NUMBER_UNITS, type NodeStats$1 as NodeStats, NumberTree, type NumericInput, type NumericRange, ONE, type OperationOptions, type OperationStatus, PERFORMANCE, type PerformanceConfig, type PerformanceMetrics, PowerTower, PrecisionError, type ProgressCallback, type Result, RomanNumeralError, RoundingMode, TEN, TWO, TreeError, UnderflowError, VERSION, type Validator, ZERO, abs, add, allEqual, and, between, binomial, checkAdditionOverflow, checkMultiplicationOverflow, checkPowerOverflow, clamp, clearBit, compare, convertToBasicConfig, createComparator, createHypernum, createLargeNumberComparator, Hypernum as default, defaultHypernum, divide, equals, factorial, fallingFactorial, formatBigInt, fromBase, fromFraction, fromRoman, fromScientific, gcd, getBit, greaterThan, greaterThanOrEqual, isAscending, isBasicConfig, isDescending, isFullConfig, isMaxHeap, isMinHeap, lcm, leadingZeros, leftShift, lessThan, lessThanOrEqual, max, mergeConfig, min, multiFactorial, multiply, normalizeNumberString, normalizePrecision, not, nthRoot, or, parseBigIntString, popCount, power, primorial, remainder, rightShift, risingFactorial, rotateLeft, rotateRight, round, scaleByPowerOfTen, scaledDivision, setBit, sign, sqrt, subfactorial, subtract, superRoot, tetration, toBase, toBigInt, toBinary, toFraction, toHexadecimal, toOctal, toRoman, toScientific, toggleBit, trailingZeros, unsignedRightShift, validateConfig, validateNonNegative, validatePositive, xor };
