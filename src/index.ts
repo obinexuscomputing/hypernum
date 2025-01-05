@@ -32,7 +32,7 @@ export {
 } from './core/errors';
 
 // Data structures and storage with explicit exports
-export * from './structures/index';
+export * from './structures/';
 export * from './storage';
 
 // Operations with explicit exports to avoid conflicts
