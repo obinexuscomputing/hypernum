@@ -41,13 +41,11 @@ import {
    */
   export function and(
     a: bigint | string | number,
-    b: bigint | string | number,
-    options: BitwiseOptions = {}
+    b: bigint | string | number
   ): bigint {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     const bigA = toBigInt(a);
     const bigB = toBigInt(b);
-    
+
     return bigA & bigB;
   }
   
