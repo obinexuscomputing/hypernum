@@ -1,4 +1,4 @@
-export * from './Ackermann';
-export * from './NumberTree';
-export * from './BigArray';
-export * from './PowerTower';
+export { AckermannStructure } from './ackermann';
+export { BigArray, type BigArrayOptions } from './bigarray';
+export { NumberTree } from './numbertree';
+export { PowerTower } from './powertower';
