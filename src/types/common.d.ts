@@ -324,3 +324,34 @@ export interface DebugConfig {
   trackPerformance: boolean;
   logLevel: 'error' | 'warn' | 'info' | 'debug';
 }
+
+export interface NumericRange {
+  min: bigint;
+  max: bigint;
+}
+
+export interface OperationStatus {
+  success: boolean;
+  message: string;
+}
+
+export interface PerformanceMetrics {
+  timing: number;
+  memory: number;
+  cache: number;
+  custom: Map<string, number>;
+}
+
+export interface NodeStats {
+  depth: number;
+  children: number;
+  size: number;
+}
+
+export interface OperationOptions {
+  precision?: number;
+  roundingMode?: RoundingMode;
+  checkOverflow?: boolean;
+  maxSteps?: number;
+  debug?: boolean;
+}
