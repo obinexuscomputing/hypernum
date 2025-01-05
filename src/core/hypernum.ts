@@ -105,19 +105,19 @@ export class Hypernum {
 
   // Bitwise Operations
   public and(a: bigint | string | number, b: bigint | string | number): bigint {
-    return bitwise.and(a, b, { maxBits: this.config.maxSteps });
+    return bitwise.and(a, b);
   }
 
   public or(a: bigint | string | number, b: bigint | string | number): bigint {
-    return bitwise.or(a, b, { maxBits: this.config.maxSteps });
+    return bitwise.or(a, b);
   }
 
   public xor(a: bigint | string | number, b: bigint | string | number): bigint {
-    return bitwise.xor(a, b, { maxBits: this.config.maxSteps });
+    return bitwise.xor(a, b);
   }
 
   public not(value: bigint | string | number): bigint {
-    return bitwise.not(value, { maxBits: this.config.maxSteps });
+    return bitwise.not(value);
   }
 
   // Data Structure Management
