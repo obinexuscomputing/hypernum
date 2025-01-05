@@ -7,6 +7,7 @@ import { HypernumConfig, mergeConfig, validateConfig } from './core';
 import { power } from './operations';
 import arithmetic from './operations/arithmetic';
 import bitwise from './operations/bitwise';
+import { MinHeap, MaxHeap } from './storage/Heap';
 import { AckermannStructure, BigArray, NumberTree, PowerTower } from './structures';
 
 // Core functionality
