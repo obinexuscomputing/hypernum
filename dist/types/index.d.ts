@@ -10,7 +10,7 @@ export * from './core/constants';
 export * from './core/common';
 export * from './core/config';
 export { HypernumError, ComputationLimitError, DataStructureError, DivisionByZeroError, FormatError, HeapPropertyError, IndexError, PrecisionError, RomanNumeralError, TreeError, UnderflowError } from './core/errors';
-export * from './structures';
+export * from './structures/index';
 export * from './storage';
 export { add, subtract, multiply, divide, remainder, abs, sign, gcd, lcm } from './operations/arithmetic';
 export { and, or, xor, not, leftShift, rightShift, unsignedRightShift, rotateLeft, rotateRight, popCount, trailingZeros, leadingZeros, getBit, setBit, clearBit, toggleBit } from './operations/bitwise';
