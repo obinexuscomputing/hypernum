@@ -1049,6 +1049,14 @@ declare class Hypernum {
     or(a: bigint | string | number, b: bigint | string | number): bigint;
     xor(a: bigint | string | number, b: bigint | string | number): bigint;
     not(value: bigint | string | number): bigint;
+    /**
+      * Calculates the greatest common divisor of two numbers
+      */
+    gcd(a: bigint | string | number, b: bigint | string | number): bigint;
+    /**
+     * Calculates the least common multiple of two numbers
+     */
+    lcm(a: bigint | string | number, b: bigint | string | number): bigint;
     createArray(id: string): BigArray<bigint>;
     getArray(id: string): BigArray<bigint>;
     createTree(id: string): NumberTree;

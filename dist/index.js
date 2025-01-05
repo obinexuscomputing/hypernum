@@ -2535,6 +2535,18 @@ class Hypernum {
     not(value) {
         return not(value);
     }
+    /**
+      * Calculates the greatest common divisor of two numbers
+      */
+    gcd(a, b) {
+        return gcd(a, b);
+    }
+    /**
+     * Calculates the least common multiple of two numbers
+     */
+    lcm(a, b) {
+        return lcm(a, b);
+    }
     // Data Structure Management
     createArray(id) {
         if (this.structures.arrays.has(id)) {
