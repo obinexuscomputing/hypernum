@@ -14,7 +14,6 @@ import {
   import {
     RoundingMode,
     round,
-    scaleByPowerOfTen
   } from '../utils/precision';
   
   /**
