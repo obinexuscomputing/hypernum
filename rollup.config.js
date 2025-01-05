@@ -30,6 +30,7 @@ const srcAliases = [
   { find: '@core', replacement: path.resolve(__dirname, 'src/core') },
   { find: '@operations', replacement: path.resolve(__dirname, 'src/operations') },
   { find: '@structures', replacement: path.resolve(__dirname, 'src/structures') },
+  {find: '@storage', replacement: path.resolve(__dirname, 'src/storage') },
   { find: '@utils', replacement: path.resolve(__dirname, 'src/utils') },
   { find: '@types', replacement: path.resolve(__dirname, 'src/types') }
 ];
