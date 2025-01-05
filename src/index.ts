@@ -149,14 +149,26 @@ export {
 export function createHypernum(config?: Partial<HypernumConfig>): Hypernum {
   const mergedConfig = mergeConfig(config || {});
   validateConfig(mergedConfig);
-  // Convert FullConfig to BasicConfig if necessary
+  
+  // Extract the basic config properties based on whether it's a BasicConfig or FullConfig
   const instanceConfig = {
-    precision: mergedConfig.precision,
-    roundingMode: mergedConfig.roundingMode,
-    checkOverflow: mergedConfig.checkOverflow,
-    maxSteps: mergedConfig.maxSteps,
-    debug: typeof mergedConfig.debug === 'boolean' ? mergedConfig.debug : false
+    precision: 'arithmetic' in mergedConfig 
+      ? mergedConfig.arithmetic.defaultPrecision 
+      : mergedConfig.precision,
+    roundingMode: 'arithmetic' in mergedConfig 
+      ? mergedConfig.arithmetic.defaultRoundingMode 
+      : mergedConfig.roundingMode,
+    checkOverflow: 'arithmetic' in mergedConfig 
+      ? mergedConfig.arithmetic.checkOverflow 
+      : mergedConfig.checkOverflow,
+    maxSteps: 'arithmetic' in mergedConfig 
+      ? mergedConfig.arithmetic.maxComputationSteps 
+      : mergedConfig.maxSteps,
+    debug: typeof mergedConfig.debug === 'object' 
+      ? mergedConfig.debug.verbose 
+      : !!mergedConfig.debug
   };
+  
   return new Hypernum(instanceConfig);
 }
 
