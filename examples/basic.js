@@ -1,40 +1,56 @@
-import Hypernum from '../dist/index.js';
+import { Hypernum, createHypernum } from '../dist/index.js';
 
-// Import the Hypernum library from the dist folder
+// Create a new Hypernum instance with overflow checking disabled for large numbers
+const hypernum = createHypernum({
+  checkOverflow: false,
+  precision: 0
+});
 
-// Create a new Hypernum instance with default configuration
-const hypernum = new Hypernum();
+try {
+  // Basic arithmetic with smaller numbers first
+  console.log('\n=== Basic Arithmetic ===');
+  const a = 12345678901234567890n;
+  const b = 98765432109876543210n;
+  
+  console.log(`a = ${a}`);
+  console.log(`b = ${b}`);
+  console.log(`Sum: ${hypernum.add(a, b)}`);
+  console.log(`Difference: ${hypernum.subtract(a, b)}`);
+  console.log(`Product: ${hypernum.multiply(a, b)}`);
+  console.log(`Quotient: ${hypernum.divide(b, a)}`);
 
-// Perform some basic arithmetic operations
-const a = 123456789012345678901234567890n;
-const b = 987654321098765432109876543210n;
+  // Bitwise operations
+  console.log('\n=== Bitwise Operations ===');
+  const x = 123456789n;
+  const y = 987654321n;
+  
+  console.log(`x = ${x}`);
+  console.log(`y = ${y}`);
+  console.log(`Bitwise AND: ${hypernum.and(x, y)}`);
+  console.log(`Bitwise OR: ${hypernum.or(x, y)}`);
+  console.log(`Bitwise XOR: ${hypernum.xor(x, y)}`);
+  console.log(`Bitwise NOT of x: ${hypernum.not(x)}`);
 
-const sum = hypernum.add(a, b);
-const difference = hypernum.subtract(a, b);
-const product = hypernum.multiply(a, b);
-const quotient = hypernum.divide(b, a);
+  // Power operations with reasonable numbers
+  console.log('\n=== Power Operations ===');
+  const base = 16n;
+  console.log(`base = ${base}`);
+  console.log(`Square: ${hypernum.power(base, 2n)}`);
+  console.log(`Cube: ${hypernum.power(base, 3n)}`);
+  console.log(`Square Root: ${hypernum.sqrt(base)}`);
+  console.log(`Cube Root: ${hypernum.nthRoot(base, 3n)}`);
 
-console.log(`Sum: ${sum}`);
-console.log(`Difference: ${difference}`);
-console.log(`Product: ${product}`);
-console.log(`Quotient: ${quotient}`);
+  // Demonstrate some special functions
+  console.log('\n=== Special Functions ===');
+  console.log(`GCD of 48 and 18: ${hypernum.gcd(48n, 18n)}`);
+  console.log(`LCM of 48 and 18: ${hypernum.lcm(48n, 18n)}`);
+  
+  // Working with precision
+  console.log('\n=== Precision Handling ===');
+  const preciseHypernum = createHypernum({ precision: 4 });
+  const divResult = preciseHypernum.divide(1n, 3n);
+  console.log(`1/3 with 4 decimal precision: ${divResult}`);
 
-// Perform some bitwise operations
-const bitwiseAnd = hypernum.and(a, b);
-const bitwiseOr = hypernum.or(a, b);
-const bitwiseXor = hypernum.xor(a, b);
-const bitwiseNot = hypernum.not(a);
-
-console.log(`Bitwise AND: ${bitwiseAnd}`);
-console.log(`Bitwise OR: ${bitwiseOr}`);
-console.log(`Bitwise XOR: ${bitwiseXor}`);
-console.log(`Bitwise NOT: ${bitwiseNot}`);
-
-// Perform some power operations
-const power = hypernum.power(a, 2n);
-const sqrt = hypernum.sqrt(a);
-const nthRoot = hypernum.nthRoot(a, 3n);
-
-console.log(`Power: ${power}`);
-console.log(`Square Root: ${sqrt}`);
-console.log(`Nth Root: ${nthRoot}`);
+} catch (error) {
+  console.error('An error occurred:', error.message);
+}
