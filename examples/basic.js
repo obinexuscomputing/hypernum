@@ -1,4 +1,4 @@
-import {Hypernum} from '../dist/index.js';
+import Hypernum from '../dist/index.js';
 
 // Import the Hypernum library from the dist folder
 

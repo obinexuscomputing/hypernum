@@ -172,6 +172,24 @@ export interface FullConfig {
   debug: DebugConfig;
   /** Feature flags */
   features: FeatureFlags;
+  /** Custom configuration options */
+  custom?: Map<string, any>;
+}
+
+/**
+ * Converts FullConfig to BasicConfig if necessary
+ */
+export function convertToBasicConfig(config: HypernumConfig): BasicConfig {
+  if (isBasicConfig(config)) {
+    return config;
+  }
+  return {
+    precision: config.arithmetic.defaultPrecision,
+    roundingMode: config.arithmetic.defaultRoundingMode,
+    checkOverflow: config.arithmetic.checkOverflow,
+    maxSteps: config.arithmetic.maxComputationSteps,
+    debug: config.debug.verbose
+  };
 }
 
 /**
