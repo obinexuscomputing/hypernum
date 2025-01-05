@@ -6,13 +6,11 @@
 import {
     toBigInt,
     ValidationError,
-    validateNonNegative
   } from '../utils/validation';
   
   import {
     RoundingMode,
-    round,
-    scaleByPowerOfTen
+
   } from '../utils/precision';
   
   /**
@@ -158,9 +156,7 @@ import {
    */
   export function toFraction(
     value: string,
-    options: ConversionOptions = {}
   ): [bigint, bigint] {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     
     // Split into integer and decimal parts
     const [intPart, decPart = ''] = value.split('.');
@@ -214,9 +210,7 @@ import {
    */
   export function fromScientific(
     value: string,
-    options: ConversionOptions = {}
   ): string {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     
     // Parse scientific notation format
     const match = value.match(/^(-?\d+\.?\d*)[eE]([+-]?\d+)$/);
