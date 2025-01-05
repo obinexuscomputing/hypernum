@@ -35,7 +35,7 @@ export { AckermannStructure } from './structures/ackermann';
 export { BigArray, type BigArrayOptions } from './structures/big-array';
 export { NumberTree } from './structures/number-tree';
 export { PowerTower } from './structures/power-tower';
-export { MinHeap, MaxHeap, type Comparator } from './storage/heap';
+export { MinHeap, MaxHeap, type Comparator } from './storage/';
 
 // Operations with explicit exports
 export {
