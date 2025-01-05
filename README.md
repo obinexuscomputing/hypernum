@@ -1,5 +1,5 @@
-# @obinexuscomputing/hypernum
-
+# @obinexuscomputing/hypernum - Computing from the Heart
+ 
 A comprehensive TypeScript/JavaScript library for handling large number operations with BigInt support.
 
 ## Features
