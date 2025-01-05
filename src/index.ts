@@ -1,11 +1,10 @@
 /**
  * Hypernum - A TypeScript/JavaScript library for large number operations
- * Provides comprehensive tools for handling large numbers and complex mathematical operations
  */
 
 import { HypernumConfig, mergeConfig, validateConfig } from './core';
 import { Hypernum } from './core/hypernum';
-import { RoundingMode } from './utils';
+import { RoundingMode } from './utils/precision';
 
 // Package version
 const VERSION: string = '0.1.0';
@@ -31,11 +30,14 @@ export {
   UnderflowError
 } from './core/errors';
 
-// Data structures and storage with explicit exports
-export * from './structures/';
-export * from './storage';
+// Data structures with explicit imports and exports
+export { AckermannStructure } from './structures/ackermann';
+export { BigArray, type BigArrayOptions } from './structures/big-array';
+export { NumberTree } from './structures/number-tree';
+export { PowerTower } from './structures/power-tower';
+export { MinHeap, MaxHeap, type Comparator } from './storage/heap';
 
-// Operations with explicit exports to avoid conflicts
+// Operations with explicit exports
 export {
   add,
   subtract,
@@ -153,7 +155,7 @@ export function createHypernum(config?: Partial<HypernumConfig>): Hypernum {
       : mergedConfig.precision ?? 0,
     roundingMode: 'arithmetic' in mergedConfig 
       ? mergedConfig.arithmetic.defaultRoundingMode 
-      : (mergedConfig.roundingMode as RoundingMode) ?? 'HALF_EVEN',
+      : (mergedConfig.roundingMode as RoundingMode) ?? RoundingMode.HALF_EVEN,
     checkOverflow: 'arithmetic' in mergedConfig 
       ? mergedConfig.arithmetic.checkOverflow 
       : mergedConfig.checkOverflow ?? true,

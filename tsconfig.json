@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    // Target ES2020 to ensure BigInt compatibility
+    // Target and Module Settings
     "target": "es2020",
     "module": "esnext",
     "lib": ["es2020", "dom"],
-    
-    // Module resolution
     "moduleResolution": "node",
+    
+    // Module Resolution
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
@@ -17,7 +17,7 @@
       "@types/*": ["src/types/*"]
     },
     
-    // Strict type checking
+    // Strict Type Checking
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -28,7 +28,7 @@
     "useUnknownInCatchVariables": true,
     "alwaysStrict": true,
     
-    // Additional checks
+    // Additional Checks
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
@@ -37,12 +37,12 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     
-    // Module features
+    // Module Features
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     
-    // Emit configuration
+    // Emit Configuration
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -50,16 +50,17 @@
     "removeComments": false,
     "importHelpers": true,
     
-    // Advanced options
+    // Advanced Options
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
+    "preserveWatchOutput": true,
     
-    // Experimental features
+    // Experimental Features
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     
-    // JSX (in case of future web components)
+    // JSX (for future web components)
     "jsx": "preserve"
   },
   "include": [
@@ -75,9 +76,6 @@
     "coverage",
     "jest.config.ts"
   ],
-  "forceConsistentCasingInFileNames": true,
-  "preserveWatchOutput": true,
-  "esModuleInterop": true,
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
