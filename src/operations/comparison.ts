@@ -6,14 +6,12 @@
 import {
     toBigInt,
     ValidationError,
-    isValidNumber,
-    isValidNumberString
+
   } from '../utils/validation';
   
   import {
     RoundingMode,
     normalizePrecision,
-    equalWithinPrecision
   } from '../utils/precision';
   
   /**
