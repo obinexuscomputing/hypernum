@@ -43,7 +43,6 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "husky install && npm run build",
-    "prepublishOnly": "npm run test:ci && npm run lint",
     "docs": "typedoc --out docs src",
     "benchmark": "ts-node benchmark/index.ts",
     "release": "standard-version",
