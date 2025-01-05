@@ -20,10 +20,11 @@ import {
 import * as arithmetic from '../operations/arithmetic';
 import * as bitwise from '../operations/bitwise';
 import * as power from '../operations/power';
-import { BigArray, NumberTree, MinHeap, MaxHeap, AckermannStructure } from '../structures';
+import { BigArray, NumberTree, AckermannStructure } from '../structures';
 import * as formatting from '../utils/formatting';
 import * as validation from '../utils/validation';
 import * as precision from '../utils/precision';
+import { MinHeap, MaxHeap } from '@/storage';
 /**
  * Configuration options for Hypernum instance
  */
