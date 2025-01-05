@@ -54,10 +54,8 @@ import {
    */
   export function or(
     a: bigint | string | number,
-    b: bigint | string | number,
-    options: BitwiseOptions = {}
+    b: bigint | string | number
   ): bigint {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     const bigA = toBigInt(a);
     const bigB = toBigInt(b);
     
@@ -69,10 +67,8 @@ import {
    */
   export function xor(
     a: bigint | string | number,
-    b: bigint | string | number,
-    options: BitwiseOptions = {}
+    b: bigint | string | number
   ): bigint {
-    const opts = { ...DEFAULT_OPTIONS, ...options };
     const bigA = toBigInt(a);
     const bigB = toBigInt(b);
     
