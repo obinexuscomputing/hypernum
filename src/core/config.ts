@@ -349,24 +349,27 @@ function validateFullConfig(config: FullConfig): void {
  * Merges configuration with appropriate defaults
  */
 export function mergeConfig(custom: Partial<HypernumConfig> = {}): HypernumConfig {
-  if (isFullConfig(custom)) {
+  if (isFullConfig(custom  as FullConfig)) {
+    const fullConfig = custom as FullConfig;
     return {
       ...DEFAULT_FULL_CONFIG,
-      ...custom,
-      arithmetic: { ...DEFAULT_FULL_CONFIG.arithmetic, ...custom.arithmetic },
-      dataStructures: { ...DEFAULT_FULL_CONFIG.dataStructures, ...custom.dataStructures },
-      formatting: { ...DEFAULT_FULL_CONFIG.formatting, ...custom.formatting },
-      performance: { ...DEFAULT_FULL_CONFIG.performance, ...custom.performance },
-      debug: { ...DEFAULT_FULL_CONFIG.debug, ...custom.debug },
-      features: { ...DEFAULT_FULL_CONFIG.features, ...custom.features }
+      ...fullConfig,
+      arithmetic: { ...DEFAULT_FULL_CONFIG.arithmetic, ...fullConfig.arithmetic },
+      dataStructures: { ...DEFAULT_FULL_CONFIG.dataStructures, ...fullConfig.dataStructures },
+      formatting: { ...DEFAULT_FULL_CONFIG.formatting, ...fullConfig.formatting },
+      performance: { ...DEFAULT_FULL_CONFIG.performance, ...fullConfig.performance },
+      debug: { ...DEFAULT_FULL_CONFIG.debug, ...fullConfig.debug },
+      features: { ...DEFAULT_FULL_CONFIG.features, ...fullConfig.features }
     };
   }
   
-  return {
+  const basicConfig: BasicConfig = {
     precision: (custom as Partial<BasicConfig>).precision ?? DEFAULT_BASIC_CONFIG.precision,
     roundingMode: (custom as Partial<BasicConfig>).roundingMode ?? DEFAULT_BASIC_CONFIG.roundingMode,
-    checkOverflow: isBasicConfig(custom) ? ((custom as Partial<BasicConfig>).checkOverflow ?? DEFAULT_BASIC_CONFIG.checkOverflow) : undefined,
+    checkOverflow: (custom as Partial<BasicConfig>).checkOverflow ?? DEFAULT_BASIC_CONFIG.checkOverflow,
     maxSteps: (custom as Partial<BasicConfig>).maxSteps ?? DEFAULT_BASIC_CONFIG.maxSteps,
-    debug: custom.debug ?? DEFAULT_BASIC_CONFIG.debug
+    debug: (custom as Partial<BasicConfig>).debug ?? DEFAULT_BASIC_CONFIG.debug
   };
+
+  return basicConfig;
 }
