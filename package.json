@@ -22,7 +22,10 @@
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md",
+    "LICENSE",
+    "rollup.config.js"
   ],
   "scripts": {
     "build": "rollup -c",
